@@ -193,6 +193,17 @@ import { reactive, computed } from 'vue'
 
 ### watch
 
+> vue2中使用
+
+```js
+    isPayImg (newVal, oldVal) {
+      console.log('newVal', newVal);
+      console.log('oldVal', oldVal);
+    }
+```
+
+
+
 监听单个值
 
 ```js

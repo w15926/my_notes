@@ -48,7 +48,53 @@ $color: #00c;
 
 
 
-## mixin调用
+## mixin
+
+- sass
+
+```css
+// 文本溢出省略号隐藏
+@mixin textEllipsis($lineCount:1) {
+  display: -webkit-box;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  word-wrap: break-word;
+  -webkit-line-clamp: $lineCount;
+  -webkit-box-orient: vertical;
+}
+
+// flex自定义 - 改变主轴居中
+@mixin felxDirection {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+```
+
+- less
+
+```css
+// 文本溢出省略号隐藏
+.textEllipsis(@lineCount:1) {
+  display: -webkit-box;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  word-wrap: break-word;
+  -webkit-line-clamp: @lineCount;
+  -webkit-box-orient: vertical;
+}
+
+// flex自定义 - 改变主轴居中
+.felxDirection {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+```
+
+
 
 > Less 调用 mixin 是 .color、.color(1,pink);    Sass 调用则是 @include color、@include color(1,pink);
 
