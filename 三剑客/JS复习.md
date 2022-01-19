@@ -215,6 +215,120 @@ console.log(undefined === 0) // false
 
 
 
+## 逻辑运算符
+
+### ||逻辑或
+
+- 类型转换
+
+```js
+if (0 || 1) { // 0经过类型转换成fasle， 1成true
+  if (0) console.log('0')
+  if (1) console.log('1') // print '1'
+}
+```
+
+
+
+- 多结果为`true`时只返回**第一个**
+
+```js
+const value1 = 'value1', value2 = 'value2', value3 = 'value3'
+const result = value1 || value2 || value3
+console.log(result) // print -> value1
+```
+
+
+
+- 结果全为`false`时，返回**最后一个**
+
+```js
+const value1 = 0, value2 = false, value3 = null
+const result = value1 || value2 || value3
+console.log(result) // print -> null
+```
+
+
+
+- 短路求值
+
+> 左侧的条件为假时才执行右侧侧命令，
+
+```js
+const variable = true
+variable || console.log('hello world')
+```
+
+
+
+### &&逻辑或
+
+- 多结果为`true`时只返回**最后一个**
+
+```js
+const value1 = 1, value2 = true, value3 = 'hello world'
+const result = value1 && value2 && value3
+console.log(result) // print -> hello world
+```
+
+
+
+- 多结果从左到右运算到第假值时，返回当前假值并且停止运行
+
+```js
+const value1 = 1, value2 = 0, value3 = 'hello world'
+const result = value1 && value2 && value3
+console.log(result) // print -> 0
+```
+
+
+
+- 优先级
+
+> 与运算 `&&` 优先级大于或运算 `||` 
+
+```js
+ // 代码 a && b || c && d 跟 && 表达式加了括号完全一样：(a && b) || (c && d)
+```
+
+
+
+## ??空值合并运算符
+
+- 当变量不为`null`和`undefined`时生效
+
+```js
+let a
+const b = 'b'
+const result = a ?? b// 等价于下一行代码
+// const result = (a !== null && a !== undefined) ? a : b
+console.log(result) // 'b
+```
+
+
+
+- 使用场景 - 为未定义的变量赋默认值
+
+```js
+let a
+console.log(a) // undefined
+a = a ?? 'a'
+console.log(a) // 'a'
+```
+
+
+
+- 使用 `??` 序列从一系列的值中选择出第一个非 `null/undefined` 的值
+
+```js
+let a = null
+let b = null
+let c = 'c'
+
+// 显示第一个已定义的值：
+console.log(a ?? b ?? c ?? "d") // c
+```
+
 
 
 # 代码质量

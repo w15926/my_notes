@@ -37,14 +37,16 @@ open ~/.gitconfig
 
 # 代理
 
-> 萌猪辅助设置只能代理的时候，git可以不用配置代理。
-
 ## 设置代理
+
+> 梯子设置智能代理的时候，git可以不用配置代理。
 
 ```shell
 git config --global http.proxy https://127.0.0.1:4780
 git config --global https.proxy https://127.0.0.1:4780
 ```
+
+
 
 ## 取消代理
 
