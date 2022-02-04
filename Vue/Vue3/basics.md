@@ -1,26 +1,3 @@
-# vite（试取代webpack工具）
-
-### install
-
-```shell
-npm i -g create-vite-app
-```
-
-### create Vue3 project
-
-```shell
-create-vite-app projectName
-```
-
-### use
-
-```shell
-cd projectName
-npm i
-npm run dev
-```
-
-
 
 # 生命周期
 

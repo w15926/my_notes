@@ -318,15 +318,160 @@ console.log(a) // 'a'
 
 
 
-- 使用 `??` 序列从一系列的值中选择出第一个非 `null/undefined` 的值
+- 进阶使用
+
+>  使用 `??` 序列从一系列的值中选择出第一个非 `null/undefined` 的值
 
 ```js
 let a = null
-let b = null
+let b = 0
 let c = 'c'
 
 // 显示第一个已定义的值：
-console.log(a ?? b ?? c ?? "d") // c
+console.log(a ?? b ?? c ?? 'd') // 0
+
+// 与 三元运算符 比较
+// 区别： 三元运算符 返回第一个真值，??返回第一个已定义
+console.log(a ? a : b ? b : c ? c : 'd' ? 'd' : 'd') // c
+
+// 与 || 比较
+// 区别： || 返回第一个真值，??返回第一个已定义
+console.log(a || b || c || 'd') // c
+```
+
+
+
+- 优先级
+
+> 禁止将 `??` 运算符与 `&&` 和 `||` 运算符一起使用，除非使用括号明确指定了优先级
+
+```js
+// () > * > || > ??
+
+let x = 1 && 2 ?? 3
+console.log(x) // 报错
+
+let y = (1 && 2) ?? 3
+console.log(y) // 2
+```
+
+
+
+## 关于循环
+
+### for
+
+- break的指定退出
+
+> 如果不使用`break outer`直接写`break`就会退出子循环，而继续执行父循环的代码
+
+```js
+outer: for (let i = 0; i < 3; i++) {
+
+  for (let j = 0; j < 3; j++) {
+
+    let input = 2
+
+    if (input === 2) break outer // 直接退出上一级的循环
+
+  }
+  console.log(1) // 最外级循环被break，这行不会执行
+}
+```
+
+
+
+### switch
+
+> switch循环的`case`匹配是采用`===`方式
+
+
+
+- 全等`case`的类型判断
+
+> `case`是执行`===`进行匹配，但是当写了`||`这种具有类型判断的时候，会先进行类型转化判断，转化后再进行全等判断
+
+```js
+let variable = 0
+
+// 正常执行
+switch (variable) {
+  case 0:
+    console.log(0)
+}
+
+// 不会执行
+switch (variable) {
+  case 0 || '0':
+    console.log('fail')
+}
+
+// 不会执行
+switch (variable) {
+  case '0' || 0:
+    console.log('fail')
+}
+```
+
+
+
+- 无`break`的问题
+
+> 代码会在`case`匹配成功后继续往下执行，直到运行到break或最后
+
+```js
+let variable = 1
+
+switch (variable) {
+  case 0:
+    console.log(0)
+  case 1:
+    console.log(1) // 执行
+  case 2:
+    console.log(2) // 执行
+  default:
+    console.log('default') // 执行
+}
+```
+
+
+
+#### case分组
+
+如果想让两个`case`执行同一个方法，可以按照以下写法（实际还是利用**无break的问题**）
+
+```js
+let variable = 1
+
+// 如果让case2也执行case1的的代码
+switch (variable) {
+  case 0:
+    console.log(0)
+    break
+  case 1:
+  case 2:
+    console.log(2) // 执行
+    break
+  default:
+    console.log('default') // 所以case不匹配时才执行
+}
+```
+
+
+
+## 关于函数
+
+- 修改形参实参不会更改，因为此时的形参相当于一个副本
+
+```js
+let variable = 1
+
+function show(p){
+  p = 2
+}
+
+show(variable)
+console.log(variable) // 1
 ```
 
 
