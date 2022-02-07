@@ -24,7 +24,7 @@
 
 ## 数据类型
 ### 关于typeof
-+ typeof null 的结果是 "object"。这是官方承认的 typeof 的行为上的错误，这个问题来自于 JavaScript 语言的早期，并为了兼容性而保留了下来。null 绝对不是一个 object。null 有自己的类型，它是一个特殊值。
+>  **typeof null 的结果是 "object"。这是官方承认的 typeof 的行为上的错误，这个问题来自于 JavaScript 语言的早期，并为了兼容性而保留了下来。null 绝对不是一个 object。null 有自己的类型，它是一个特殊值。**
 
 
 
@@ -295,7 +295,7 @@ console.log(result) // print -> 0
 
 ## ??空值合并运算符
 
-- 当变量不为`null`和`undefined`时生效
+- 当变量同时不为`null`和`undefined`时生效
 
 ```js
 let a
@@ -464,16 +464,218 @@ switch (variable) {
 - 修改形参实参不会更改，因为此时的形参相当于一个副本
 
 ```js
-let variable = 1
+let uname = 'pd'
 
-function show(p){
-  p = 2
+function showName(uname){
+  uname += '胖迪'
+  console.log(uname) // pd胖迪
 }
+showName(uname)
 
-show(variable)
-console.log(variable) // 1
+console.log(uname) // pd
 ```
 
 
 
-# 代码质量
+### 形参默认值
+
+形参没有接受到值时存在`undefined`默认值
+
+```js
+// 初始默认值
+function showName(uname, empty){
+  console.log(uname) // pd
+  console.log(empty) // undefined
+}
+showName('pd')
+
+
+
+
+// 手动设置默认值 方式一 - 直接设置形参：
+function showName (uname = '胖迪', empty = 'no text given') {
+  console.log(uname) // pd
+  console.log(empty) // no text given
+}
+showName('pd')
+
+
+
+
+// 手动设置默认值 方式二 - 后置修改：
+function showName (uname) {
+  // Method 1
+  // if(!uname){ // 使用 == 比较，存在类型转换。
+  //   uname = 'Default argument'
+  //   // Do something...
+  // }
+
+  // Method 2
+  uname = uname ?? 'Default argument' // 推荐使用空值运算符，不存在类型转换。
+
+  // Method 3
+  // uname = uname || 'Default argument' // 使用 == 比较，存在类型转换。
+  
+  console.log(uname)
+}
+showName(0)
+```
+
+
+
+### 默认返回值
+
+如果`return`为空，则默认返回`undefined`
+
+```js
+const doNothing = () => {}
+// function doNothing(){
+//   return
+// }
+console.log(doNothing() === undefined) // true
+```
+
+
+
+### 函数表达式与函数声明的调用区别
+
+- 函数声明
+
+```js
+// 正常执行
+function sayHi(name) {
+  console.log( `Hello, ${name}` )
+}
+
+sayHi('pd')
+
+// 正常执行
+sayHi('pd')
+
+function sayHi(name) {
+  console.log( `Hello, ${name}` )
+}
+```
+
+- 函数表达式
+
+```js
+// 失败，变量未赋值
+sayHi('pd') // Cannot access 'sayHi' before initialization
+
+let sayHi = function(name) {
+  console.log( `Hello, ${name}` )
+}
+
+// 正常执行
+let sayHi = function(name) {
+  console.log( `Hello, ${name}` )
+}
+
+sayHi('pd')
+```
+
+
+
+# Object基础知识
+
+## 对象
+
+### delete操作符
+
+> 用于删除某一key
+
+```js
+let obj = {
+  uname: 'pd',
+  age: 18,
+  gender: 0
+}
+
+delete obj.uname
+
+console.log(obj) // { age: 18, gender: 0 }
+```
+
+
+
+### in操作符
+
+> 用于检测某一key是否存在
+
+```js
+let obj = {
+  uname: undefined
+}
+
+// 此处如果用是否等于 undefined 来判断的话会出错
+console.log('uname' in obj) // true
+```
+
+
+
+### 方括号`[]`
+
+> 基础使用
+
+```js
+let girl = {
+  'She is a beautiful girl': true
+}
+console.log(girl['She is a beautiful girl']) // true
+
+```
+
+
+
+> 计算属性
+
+```js
+let fruit = 'banana'
+
+let bag = {
+  [fruit]: 7 // 此时fruit为计算属性，key为fruit变量的value
+}
+
+console.log(bag.banana) // 7
+console.log(bag.orange) // undefined
+
+// 计算属性的复杂写法
+let fruit = 'apple';
+let bag = {
+  [fruit + 'Computers']: 5
+}
+console.log(bag) // { appleComputers: 5 
+```
+
+
+
+> 计算属性的另一种写法
+
+```js
+let fruit = 'tomato'
+let bag = {}
+
+// key = fruit 变量的 value
+bag[fruit] = 5
+
+console.log(bag) // { tomato: 5 }
+```
+
+
+
+### 属性名称限制
+
+> 属性命名没有限制。属性名可以是任何字符串或者 symbol，其他类型会被自动地转换为字符串。
+
+```js
+let obj = {
+  0: "test" // 等同于 "0": "test"
+}
+
+// 都会输出相同的属性（数字 0 被转为字符串 "0"）
+console.log(obj['0']) // test
+console.log(obj[0]) // test
+console.log(obj) // { '0': 'test' }
+```
+
