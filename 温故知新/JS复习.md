@@ -608,6 +608,11 @@ let obj = {
   uname: undefined
 }
 
+console.log(obj.age) // 如果不存在则返回 undefined
+// 判断某一 key 是否存在
+if(obj.age === undefined) console.log('不存在')
+else console.log('存在')
+
 // 此处如果用是否等于 undefined 来判断的话会出错
 console.log('uname' in obj) // true
 ```
@@ -677,5 +682,338 @@ let obj = {
 console.log(obj['0']) // test
 console.log(obj[0]) // test
 console.log(obj) // { '0': 'test' }
+```
+
+
+
+### for...in循环
+
+> 数字默认按大小排序
+
+```js
+let nums = {
+  '2': 2,
+  '3': 3,
+  '1': 1
+}
+
+for (const key in nums) {
+  // keys
+  console.log(key) // '1' '2' '3'
+  // 属性键的值
+  console.log(nums[key]) // 1 2 3
+}
+
+// Object.keys(nums)
+// Object.values(nums)
+```
+
+
+
+> 数字按创建时间排序
+
+```js
+let nums = {
+  // 添加符号 + 
+  '+2': 2,
+  '+3': 3,
+  '+1': 1
+}
+
+for (const key in nums) {
+  // 添加符号 + 
+  console.log(+key) // 2 3 1 此时转换为 Number
+  // console.log(nums[key]) // 2 3 1 这里不需要再写 + 
+}
+```
+
+
+
+> 字母按创建时间排序
+
+```js
+let users = {
+  'xd': '小迪',
+  'pd': '胖迪',
+  'rb': '热吧'
+}
+
+for (const key in users) {
+  console.log(key) // xd pd rb
+  console.log(users[key]) // 小迪 胖迪 热吧
+}
+```
+
+
+
+## 对象的引用和复制
+
+### 引用
+
+```js
+// 每一个 {} 代表内存中一个地址值
+let obj = {}
+let obj2 = {}
+console.log(obj == obj2) // false
+console.log(obj === obj2) // false
+
+// 代码中属于赋值，内存中属于引用。实际obj2和obj3都只想同一个地址值，只是引用的变量名发生了变化而已。
+let obj3 = obj2
+console.log(obj3 == obj2) // true
+console.log(obj3 === obj2) // true
+```
+
+
+
+### 克隆与合并
+
+对象直接赋值给其他变量是属于引用地址值，不属于复制。
+
+简而言之，就是在两个对象（两个地址值）中把其中一个对象的属性添加到另一个对象。
+
+#### 浅克隆
+
+> 最原始的方式
+
+```js
+let user = {
+  name: 'pd',
+  age: 18
+}
+
+let clone = {} // 新的空对象
+
+// 将 user 中所有的属性拷贝到其中
+for (let key in user) {
+  clone[key] = user[key]
+}
+console.log(clone) // { name: 'pd', age: 18 }
+console.log(clone == user) // false
+console.log(clone === user) // false
+```
+
+
+
+> Object.assign()
+
+替代最原始的方式
+
+```js
+let user = {
+  name: 'pd',
+  age: 18
+}
+
+let clone = {}
+
+// Object.assign(dest, [src1, src2, src3...])
+Object.assign(clone, user)
+
+console.log(clone) // { name: 'pd', age: 18 }
+console.log(clone == user) // false
+console.log(clone === user) // false
+```
+
+```js
+// 简写
+let user = {
+  name: 'pd',
+  age: 18
+}
+let clone = Object.assign({}, user)
+let clone2 = Object.assign({ ...user })
+```
+
+如果key重复则覆盖
+
+```js
+let user = { name: 'pd' };
+
+Object.assign(user, { name: 'xd' })
+
+console.log(user.name) // 现在 user = { name: 'xd' }
+```
+
+
+
+#### 深克隆
+
+> 问题所在
+
+```js
+let user = { // 引用一个地址值
+  name: 'ikun',
+  skill: { // 又引用一个地址值
+    isSign: true,
+    isDance: true,
+    isRap: true
+  }
+}
+let clone = Object.assign({ ...user })
+
+// 只检测外层即第一级
+console.log(clone == user) // false
+console.log(clone === user) // false
+// 内层实际还是共用
+console.log(clone.skill == user.skill) // true
+console.log(clone.skill === user.skill) // true
+// 共用证明
+user.skill.isRap = false
+console.log(clone.skill.isRap) // false
+```
+
+
+
+> 解决方式
+
+```js
+let user = { // 引用一个地址值
+  name: 'ikun',
+  skill: { // 又引用一个地址值
+    isSign: true,
+    isDance: true,
+    isRap: true
+  }
+}
+let clone = JSON.parse(JSON.stringify(user))
+// let clone2 = _.cloneDeep(user) // Lodash写法
+
+console.log(clone == user) // false
+console.log(clone === user) // false
+
+console.log(clone.skill == user.skill) // false
+console.log(clone.skill === user.skill) // false
+
+user.skill.isRap = false
+console.log(clone.skill.isRap) // true
+```
+
+
+
+## 构造器和操作符 "new"
+
+### 构造函数
+
+无法使用**箭头函数**创建构造器，因为它没有自己的`this`
+
+> 等于一个公用函数，在Vue中常用于挂载到原型上以供全局使用。
+
+```js
+// 第一个字母尽量大写（共同约定），通过 new 调用。
+function User (name) {
+  // this = {};（隐式创建）
+
+  // 添加属性到 this
+  this.name = name
+  this.isAdmin = false
+
+  // return this;（隐式返回）
+}
+
+let user = new User('pd')
+let user2 = new User('xd')
+
+// User { name: 'pd', isAdmin: false } User { name: 'xd', isAdmin: false }
+console.log(user, user2)
+```
+
+
+
+> 立即调用的构造函数
+
+无法重复使用
+
+```js
+// 不能接收实参
+let user = new function() {
+  this.name = 'pd'
+  this.isAdmin = false
+}
+
+// 不能写括号调用，所以也不能传递参数
+console.log(user) // { name: 'pd', isAdmin: false }
+```
+
+
+
+### 构造器模式测试：new.target
+
+```js
+function User (name) {
+  console.log(new.target) // 返回本体或者undefined
+
+  if (!new.target) { // 如果你没有通过 new 运行我
+    return new User(name) // ……我会给你添加 new
+  }
+
+  this.name = name
+}
+
+// 如果不使用 new 来使用构造函数，则默认返回 undefined
+// User() // undefined
+
+// 使用 new 则正常调用，如果不需要传递参数，则可以去掉括号。
+new User() // function User { ... }
+```
+
+
+
+### 构造器的return
+
+> 构造器没有 `return` 语句。它们的任务是将所有必要的东西写入 `this`，并自动转换为结果。
+>
+> 如果这有一个 `return` 语句，那么规则就简单了：
+>
+> > 如果 `return` 返回的是一个对象，则返回这个对象，而不是 `this`。
+> >
+> > 如果 `return` 返回的是一个原始类型，则忽略。
+
+```js
+function User () {
+
+  this.name = 'xd'
+
+  return { name: 'pd' } // <-- 返回这个对象
+}
+
+console.log(new User().name) // pd，得到了那个对象
+```
+
+```js
+function User () {
+
+  this.name = 'xd'
+
+  return // <-- 返回 this
+}
+
+console.log(new User().name) // xd
+```
+
+
+
+### 构造器的方法
+
+```js
+function User (name) {
+  this.name = name
+  this.sayHi = () => console.log("My name is: " + this.name) // 就添加个函数而已
+}
+
+let con = new User('pd')
+
+con.sayHi()
+```
+
+
+
+### 省略括号
+
+> 如果不需要传递参数，则可以去掉括号。
+
+```js
+let user = new User
+// 等同于
+let user = new User()
 ```
 
