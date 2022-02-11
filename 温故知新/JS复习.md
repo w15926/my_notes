@@ -261,7 +261,7 @@ variable || console.log('hello world')
 
 
 
-### &&逻辑或
+### &&逻辑与
 
 - 多结果为`true`时只返回**最后一个**
 
@@ -1015,5 +1015,137 @@ con.sayHi()
 let user = new User
 // 等同于
 let user = new User()
+```
+
+
+
+## 可选链?.
+
+> 问题：如果返回值为`undefined`或者`null`是，则代码可能报错，使用**可选链**则可以让代码强制返回`undefined`。
+>
+> 解决：可选链检查左边部分是否为 `null/undefined`，如果不是则继续运算，如果是则统一返回`undefined`
+
+```js
+let user = {}
+
+// console.log(user.address.street.name) // 报错
+console.log(user?.address?.street?.name) // 返回undefined
+
+/* 
+  不要过度使用可选链
+    如果 user 对象必须存在，但 address 是可选的，那么我们应该这样写 user.address?.street，而不是这样 user?.address?.street。
+ */
+
+```
+
+
+
+### 短路效应
+
+> `?.` 前的变量必须已声明，如果不存在，就会立即停止运算，等价于`return`。
+
+```js
+console.log(user?.address?.street) // 报错（没有声明过 user 变量）
+console.log('hello world') // 不会执行
+```
+
+
+
+### 其它变体?.()、?.[]
+
+> `?.()` 用于调用一个可能不存在的函数
+
+```js
+let userAdmin = {
+  admin() {
+    console.log('I am pd')
+  }
+}
+
+let userGuest = {}
+
+userAdmin.admin?.() // I am pd
+
+userGuest.admin?.() // 不会进行任何操作
+```
+
+
+
+> `?.[]`来访问属性
+
+```js
+let key = 'fruit-banana'
+
+let obj = {
+  [key]: 7
+}
+
+let obj2 = new Object()
+
+console.log(obj?.['fruit-banana']) // 7
+console.log(obj2?.['fruit-banana']) // undefined
+```
+
+
+
+### 其它操作
+
+> 可以将 `?.` 跟 `delete` 一起使用
+
+```js
+delete user?.name; // 如果 user 存在，则删除 user.name
+```
+
+
+
+> 可以读取或删除，但不能写入。
+
+```js
+let user = {}
+
+user?.name = 'pd' // 报错
+
+console.log(user)
+```
+
+
+
+> **不要过度使用可选链**
+>
+> > 我们应该只将 `?.` 使用在一些东西可以不存在的地方。
+> >
+> > 例如，如果根据我们的代码逻辑，`user` 对象必须存在，但 `address` 是可选的，那么我们应该这样写 `user.address?.street`，而不是这样 `user?.address?.street`。
+> >
+> > 所以，如果 `user` 恰巧因为失误变为 `undefined`，我们会看到一个编程错误并修复它。否则（对自己的实力足够自信，就没有否则），代码中的错误在不恰当的地方被消除了，这会导致调试更加困难。
+
+
+
+### 兼容性
+
+>  IE不支持
+
+
+
+## Symbol类型
+
+根据规范，对象的属性键只能是字符串类型或者 Symbol 类型。不是 Number，也不是 Boolean，只有字符串或 Symbol 这两种类型。
+
+> Symbol创建的实例化对象是唯一的，即使描述内容相等。
+
+```js
+let id = Symbol('unique') // unique是Symbol的描述内容
+let id2 = Symbol('unique')
+
+console.log(id == id2) // false
+console.log(id === id2) // false
+```
+
+
+
+> Symbol 不会被自动转换为字符串
+
+```js
+let id = Symbol('unique')
+console.log(id) // TypeError: Cannot convert a Symbol value to a string
 ```
 
