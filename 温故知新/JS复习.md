@@ -1144,8 +1144,87 @@ console.log(id === id2) // false
 
 > Symbol 不会被自动转换为字符串
 
+JavaScript 中的大多数值都支持字符串的隐式转换。例如，我们可以 `alert` 任何值，都可以生效。Symbol 比较特殊，它不会被自动转换。
+
 ```js
 let id = Symbol('unique')
-console.log(id) // TypeError: Cannot convert a Symbol value to a string
+console.log(id) // Symbol(unique)
+
+// alert(id) // TypeError: Cannot convert a Symbol value to a string
 ```
+
+
+
+> Symbol转换为字符串
+
+由于Symbol不存在**隐式转换**，所以需要手动转换。
+
+```js
+let id = Symbol('unique')
+console.log(id.toString()) // 'Symbol(unique)'
+
+// 或者获取 symbol.description 属性，只显示描述（description）
+console.log(id.description) // 'unique'
+```
+
+
+
+### “隐藏”属性
+
+> 对象字面量中的Symbol
+
+```js
+let id = Symbol('unique')
+let user = {
+  name: 'pd',
+  [id]: 1 // 而不是 'id'：1
+}
+
+console.log(user.id) // undefined
+console.log(user[id]) // 1
+```
+
+这是因为我们需要变量 `id` 的值作为键，而不是字符串 'id'。
+
+
+
+> Symbol在for...in中被跳过
+
+```js
+let id = Symbol('unique')
+let user = {
+  name: 'pd',
+  [id]: 1
+}
+
+for (const key in user) {
+  console.log(key) // name
+  console.log(user[key]) // pd
+}
+
+Object.keys(user).forEach(item => console.log(item)) // name
+Object.values(user).forEach(item => console.log(item)) // pd
+```
+
+
+
+> Object.assign()会同时复制Symbol属性
+
+```js
+let id = Symbol('unique')
+let user = {
+  name: 'pd',
+  [id]: 1
+}
+
+let clone = Object.assign({}, user)
+
+console.log(clone) // { name: 'pd', [Symbol(unique)]: 1 }
+```
+
+这里并不矛盾，就是这样设计的。这里的想法是当我们克隆或者合并一个 object 时，通常希望 **所有** 属性被复制（包括像 `id` 这样的 Symbol）。
+
+
+
+### 全局Symbol
 
