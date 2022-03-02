@@ -80,3 +80,22 @@ border-top: 90px solid pink;
 border-right: 50px solid blueviolet;
 ```
 
+
+
+# 滚动条自定义
+
+```css
+    .importantReminder {
+      width: 100%;
+      height: 100%;
+      overflow: auto;
+      &::-webkit-scrollbar {
+        width: 6px;
+      }
+      &::-webkit-scrollbar-thumb {
+        background: #cccc;
+        border-radius: 3px;
+      }
+    }
+```
+
