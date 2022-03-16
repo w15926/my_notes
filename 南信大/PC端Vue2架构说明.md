@@ -26,6 +26,29 @@ new Vue({
 
 
 
+# 高德地图与openLayers地图
+
+目录
+
+> src
+>
+> > views
+> >
+> > > Demo
+> > >
+> > > > index.vue
+
+配置了两款地图，并且做了初始化的演示，项目运行可直接查看效果。
+
+```vue
+    <!-- 演示openlayers （采用模块化开发方案） -->
+    <olMap />
+    <!-- 演示高德地图 -->
+    <div id="map_Gaode" />
+```
+
+
+
 # Cookie配置token封装
 
 目录
@@ -235,7 +258,7 @@ export const myRequest = opt => {
 >
 > > api
 > >
-> > > demo.js
+> > > demo.js（此文件名应与接口同步）
 
 ```js
 /**
@@ -246,9 +269,20 @@ export const myRequest = opt => {
 
 import { myRequest } from '@/utils/request'
 
-// 演示封装调用接口，做统一管理
+// 演示封装调用接口，做统一管理    方法名应与接口同步
 export const getDemoData = params =>
-  myRequest({ url: 'api/userLogin', method: 'post', params, isFormData: true }) // 需要使用ForData时加上
+  myRequest({ url: 'api/userLogin', method: 'post', params, isFormData: true, g1 }) // 需要使用FormData时加上，g1是调用public/config.js里的第二套接口
+```
+
+示意
+
+```js
+/* 预警统计（此处是接口文档大标题） */
+import { myRequest } from '@/utils/request'
+
+// 各城市预警类型次数（此处也是取自接口说明标题）
+export const statisticsCountAlertMultiCity = params => // 这个变量名也是取自接口，方便统一管理
+  myRequest({ url: '/alarm/statisticsCountAlertMultiCity', params })
 ```
 
 
@@ -352,16 +386,40 @@ export default new Vuex.Store({
 
 
 
+user.js文件
+
+```js
+const state = {
+  name: '胖迪'
+}
+
+const mutations = {
+  changeName (state, params) {
+    state.name = params
+  }
+}
+
+const actions = {
+
+}
+
+export default {
+  namespaced: true, // 解决命名冲突
+  state,
+  mutations,
+  actions
+}
+```
+
+
+
 ## 使用
 
 唯一区别就是调用规则发生细节变化，在`state`后面需要加上你的模块名（modules文件夹下的某个文件名）
 
 ```js
-console.log('Vuex内容：', this.$store.state.user.name)
-```
-
-```js
-this.$store.commit('user/youMutationsMethod', params）
+    this.$store.commit('user/changeName', '迪丽热巴') // vuex 演示，已处理刷新页面丢失数据问题
+    console.log('Vuex内容：', this.$store.state.user.name)
 ```
 
 
@@ -430,6 +488,24 @@ module.exports = {
 
 ```css
 /* 已用normalize初始化项目，这里写额外需要初始化的全局样式 */
+* {
+  box-sizing: border-box !important;
+}
+
+body {
+  /* iOS Safari */
+  -webkit-touch-callout: none;
+  /* Chrome/Safari/Opera */
+  -webkit-user-select: none;
+  /* Konqueror */
+  -khtml-user-select: none;
+  /* Firefox */
+  -moz-user-select: none;
+  /* Internet Explorer/Edge */
+  -ms-user-select: none;
+  user-select: none;
+}
+
 ul, li {
   padding: 0;
   margin: 0;
@@ -455,8 +531,6 @@ ul, li {
 
 # Vue2的全局过滤器
 
-不需要在main.js里配置，main.js里不需要太多不必要的代码，要尽量简洁。
-
 目录
 
 > src
@@ -467,7 +541,9 @@ ul, li {
 > > >
 > > > methods.js
 
-所有的过滤器应该统一文件管理，在此文件配置项目所有需要的过滤器，同级下methods.js同理。
+不需要在main.js里配置，main.js里不需要太多不必要的代码，要尽量简洁。
+
+所有的过滤器应该统一文件管理，在此文件配置项目所有需要的过滤器。
 
 ```js
 import Vue from 'vue'
@@ -480,5 +556,43 @@ Vue.filter('filterDistance', val => {
   if (res.toString().substring(0, 1) === '0') return res.toFixed(2) + 'km'
   return res + 'km'
 })
+```
+
+通过管道符号使用
+
+**注意：仅能在moustache中使用**
+
+```vue
+    <!-- 演示Vue2的全局过滤器 -->
+    <div>{{31415926 | filterDistance}}</div>
+```
+
+
+
+# methods.js公用方法使用
+
+目录
+
+> src
+>
+> > utils
+> >
+> > > methods.js
+
+此文件写入公用JS方法，在需要的文件里使用`import`按需导入。
+
+```js
+// 封装某某方法
+export const say = str => 'say：' + str
+```
+
+使用
+
+```js
+import { say } from '@/utils/methods'
+```
+
+```js
+console.log(say('胖迪')) // say：胖迪
 ```
 
