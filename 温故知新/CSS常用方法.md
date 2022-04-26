@@ -99,3 +99,24 @@ border-right: 50px solid blueviolet;
     }
 ```
 
+悬浮显示滚动条
+
+```css
+    .setting-box {
+      width: 100%;
+      height: 610px;
+      overflow: hidden;
+      &:hover {
+        overflow-x: hidden;
+        overflow-y: scroll;
+        &::-webkit-scrollbar {
+          width: 6px;
+        }
+        &::-webkit-scrollbar-thumb {
+          background: #cccc;
+          border-radius: 3px;
+        }
+      }
+    }
+```
+
