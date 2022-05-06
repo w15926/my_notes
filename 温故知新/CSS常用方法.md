@@ -84,11 +84,14 @@ border-right: 50px solid blueviolet;
 
 # 滚动条自定义
 
+> overflow-y: overlay;可以让滚动条不挤压样式Ï
+
 ```css
     .importantReminder {
       width: 100%;
       height: 100%;
-      overflow: auto;
+      // overflow: auto;
+      overflow-y: overlay;
       &::-webkit-scrollbar {
         width: 6px;
       }
@@ -108,7 +111,8 @@ border-right: 50px solid blueviolet;
       overflow: hidden;
       &:hover {
         overflow-x: hidden;
-        overflow-y: scroll;
+        // overflow-y: scroll;
+        overflow-y: overlay;
         &::-webkit-scrollbar {
           width: 6px;
         }
