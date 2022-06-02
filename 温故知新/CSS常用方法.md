@@ -84,7 +84,7 @@ border-right: 50px solid blueviolet;
 
 # 滚动条自定义
 
-> overflow-y: overlay;可以让滚动条不挤压样式Ï
+> overflow-y: overlay;可以让滚动条不挤压样式
 
 ```css
     .importantReminder {
@@ -124,3 +124,4 @@ border-right: 50px solid blueviolet;
     }
 ```
 
+​	
