@@ -19,6 +19,14 @@ open .zshrc
 
 
 
+**zsh**
+
+```shell
+ open ~/.zshrc
+```
+
+
+
 # 端口
 
 - 查看当前端口进程
