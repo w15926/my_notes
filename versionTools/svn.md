@@ -1,6 +1,6 @@
 # 使用配置
 
-## 安装
+## 安装及配置环境
 
 ```shell
 brew install subversion

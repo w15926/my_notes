@@ -91,12 +91,13 @@ border-right: 50px solid blueviolet;
       width: 100%;
       height: 100%;
       // overflow: auto;
+      overflow-x: hidden;
       overflow-y: overlay;
       &::-webkit-scrollbar {
         width: 6px;
       }
       &::-webkit-scrollbar-thumb {
-        background: #cccc;
+        background: #206560;
         border-radius: 3px;
       }
     }
@@ -117,7 +118,7 @@ border-right: 50px solid blueviolet;
           width: 6px;
         }
         &::-webkit-scrollbar-thumb {
-          background: #cccc;
+          background: #206560;
           border-radius: 3px;
         }
       }
