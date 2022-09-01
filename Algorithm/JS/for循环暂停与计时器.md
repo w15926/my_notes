@@ -5,18 +5,17 @@
 使用async 将异步方法变为同步方法执行，只有返回 resolve才会触发 await向下执行。
 
 ```js
-const sleep = (timeout= 1000)=>new Promise((resolve, reject)=>{
-    setTimeout(resolve, timeout);
-});
+const sleep = (timeout = 300) => new Promise(resolve => setTimeout(resolve, timeout))
+
 // 可以使用 bluebird模块中的 bluebird.delay() 替换 sleep()
 // const bluebird = ruquire('bluebird');
 let timer = async(timeout) => {
     for(let i = 0; i< timeout; i++) {
-        await sleep(1000);
-        console.log(i+1);
+        await sleep(1000)
+        console.log(i+1)
     }
 }
-timer(10);
+timer(10)
 ```
 
 
