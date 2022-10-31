@@ -9,10 +9,9 @@ const sleep = (timeout = 300) => new Promise(resolve => setTimeout(resolve, time
 
 // 可以使用 bluebird模块中的 bluebird.delay() 替换 sleep()
 // const bluebird = ruquire('bluebird');
-let timer = async(timeout) => {
-    for(let i = 0; i< timeout; i++) {
+let timer = async count => {
+    for(let i = 0; i < count; i++) {
         await sleep(1000)
-        console.log(i+1)
     }
 }
 timer(10)

@@ -184,7 +184,7 @@ arr3 = [1, "2", new Date()]
 ### tuple
 
 ```typescript
-// tuple 元祖（长度固定的数组）
+// tuple 元祖（长度且类型固定的数组）
 let arr4: [string, string, number]
 arr4 = ['1', '2', 3] // 顺序不可乱
 ```

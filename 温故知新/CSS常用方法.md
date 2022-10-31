@@ -118,7 +118,7 @@ border-right: 50px solid blueviolet;
           width: 6px;
         }
         &::-webkit-scrollbar-thumb {
-          background: #206560;
+          background: #ccc;
           border-radius: 3px;
         }
       }
