@@ -35,7 +35,38 @@ GitHub：settings > SSH and GPG keys > SSH Keys
 
 
 
+# 常用命令
+
+### …or create a new repository on the command line
+
+```shell
+echo "# WebGIS-loopFrame" >> README.md
+git init
+git add README.md
+git commit -m "first commit"
+git branch -M main
+git remote add origin https://github.com/w15926/WebGIS-loopFrame.git
+git push -u origin main
+```
+
+### …or push an existing repository from the command line
+
+```shell
+git remote add origin https://github.com/w15926/WebGIS-loopFrame.git
+git branch -M main
+git push -u origin main
+```
+
+
+
 # 常见报错
+
+fatal: The current branch V2.2 has no upstream branch.
+To push the current branch and set the remote as upstream, use
+
+    git push --set-upstream origin V2.2
+
+
 
 ## remote: Support for password authentication was removed on August 13, 2021. 
 
