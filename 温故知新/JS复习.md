@@ -1,7 +1,9 @@
 
 > 本篇个人笔记适用于有基础人群复习，并不会记录所有，会略过很多常用知识。
 >
-> https://zh.javascript.info/
+> 《现代 JavaScript 教程》https://zh.javascript.info/
+>
+> 《ES6标准入门》https://es6.ruanyifeng.com/
 
 
 

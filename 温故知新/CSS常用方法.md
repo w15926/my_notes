@@ -41,8 +41,17 @@ background-color: var(--theme-color);
 
 > 多行文本溢出显示省略号，有较大兼容性问题，适合webkit浏览器或移动端（移动端大部分是webkit内核）
 
-```css
+```scss
+// 方法一
 display: -webkit-box;
+word-wrap: break-word;
+-webkit-line-clamp: 2;
+overflow: hidden;
+text-overflow: ellipsis;
+
+// 方法二
+display: -webkit-box;
+-webkit-box-orient: vertical;
 word-wrap: break-word;
 -webkit-line-clamp: 2;
 overflow: hidden;
@@ -91,6 +100,7 @@ border-right: 50px solid blueviolet;
       width: 100%;
       height: 100%;
       // overflow: auto;
+      overscroll-behavior: none;
       overflow-x: hidden;
       overflow-y: overlay;
       &::-webkit-scrollbar {
@@ -109,6 +119,7 @@ border-right: 50px solid blueviolet;
     .setting-box {
       width: 100%;
       height: 610px;
+      overscroll-behavior: none;
       overflow: hidden;
       &:hover {
         overflow-x: hidden;
@@ -118,7 +129,7 @@ border-right: 50px solid blueviolet;
           width: 6px;
         }
         &::-webkit-scrollbar-thumb {
-          background: #ccc;
+          background: #999;
           border-radius: 3px;
         }
       }
