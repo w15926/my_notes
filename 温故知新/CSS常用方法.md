@@ -95,45 +95,25 @@ border-right: 50px solid blueviolet;
 
 > overflow-y: overlay;可以让滚动条不挤压样式
 
-```css
-    .importantReminder {
-      width: 100%;
-      height: 100%;
-      // overflow: auto;
-      overscroll-behavior: none;
-      overflow-x: hidden;
-      overflow-y: overlay;
-      &::-webkit-scrollbar {
-        width: 6px;
-      }
-      &::-webkit-scrollbar-thumb {
-        background: #206560;
-        border-radius: 3px;
-      }
-    }
-```
-
 悬浮显示滚动条
 
 ```css
-    .setting-box {
-      width: 100%;
-      height: 610px;
+    overflow: hidden;
+    z-index: 1;
+    &::-webkit-scrollbar {
+      width: 0px;
+    }
+    &::-webkit-scrollbar-thumb {
+      background: rgba($color: #000000, $alpha: 0.3);
+      border-radius: 3px;
+    }
+    &:hover {
+      overflow-x: hidden;
+      overflow-y: overlay;
       overscroll-behavior: none;
-      overflow: hidden;
-      &:hover {
-        overflow-x: hidden;
-        // overflow-y: scroll;
-        overflow-y: overlay;
-        &::-webkit-scrollbar {
-          width: 6px;
-        }
-        &::-webkit-scrollbar-thumb {
-          background: #999;
-          border-radius: 3px;
-        }
+      &::-webkit-scrollbar {
+        width: 6px;
       }
     }
 ```
 
-​	
