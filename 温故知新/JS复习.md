@@ -1,5 +1,5 @@
 
-> 本篇个人笔记适用于有基础人群复习，因此并不会记录所有知识。
+> 本篇个人笔记适用于有经验人群复习，因此并不会记录所有知识。
 >
 > 《现代 JavaScript 教程》https://zh.javascript.info/
 >
@@ -25,9 +25,7 @@
 alert("some code");
 // 下面的 "use strict" 会被忽略，必须在最顶部。
 
-"use strict";
-
-// 严格模式没有被激活
+"use strict"; 
 ```
 
 > 只有注释可以出现在 `"use strict"` 的上面
@@ -60,7 +58,10 @@ alert("some code");
 > 比如，当把除法 `/` 用于非 number 类型：
 
 ```js
-alert( "6" / "2" ) // 3, string 类型的值被自动转换成 number 类型后进行计算
+const test = 6 / '3'
+const test1 = '6' / '3'
+console.warn(test, typeof (test)) // 2 number
+console.warn(test1, typeof (test1)) // 2 number
 ```
 
 
@@ -127,7 +128,7 @@ console.log(res_1) // 2 在逗号运算符里被执行了
 console.log(res_3) // 4 逗号运算符返回最后的语句的结果
 
 // 逗号运算符的其他运用场景示例
-res_1 > 1 ? (console.log('hello'), console.log('my'), console.log('girls')) : res_1
+res_1 > 1 ? (console.log('hello'), console.log('my'), console.log('girl')) : res_1
 
 // 注意：在console输出各种日志中，这里的逗号仅代表显示多个值
 console.log(1, 2) // 1 2
@@ -151,12 +152,19 @@ console.log('abcd' > 'abc') // true
 console.log('e' > 'abc') // true
 
 // JS采用 unicode 编码顺序，在编码表索引中，字母 a 的 index 大于 A
-console.log('a' > 'A')
+console.log('a' > 'A') // true
+
+console.log('b' > 'a') // true
+console.log('B' > 'A') // true
+
+console.log('a' > 'Z') // true 小写字母永远比任何大写字母大
+console.log('Z' > 'a') // false 大写字母永远比任何小写字母小
+
 ```
 
  
 
-一个神奇的现象
+一个神奇的现象（类型转换）
 
  - 若直接比较两个值，其结果是相等的。
  - 若把两个值转为布尔值，它们可能得出完全相反的结果，即一个是 `true`，一个是 `false`。
@@ -199,7 +207,7 @@ console.log(false === 0) // false
 
 ### 对 null 和 undefined 进行比较
 
-当使用数学式或其他比较方法` < > <= >=` 时，`null/undefined `会被转化为数字：`null` 被转化为 0，`undefined` 被转化为 `NaN`。
+当使用数学式或其他比较方法` < > <= >=` 时，`null`和`undefined `会被转化为数字：`null` 被转化为 0，`undefined` 被转化为 `NaN`。
 
 ```js
 console.log(null == undefined) // true
@@ -212,7 +220,7 @@ console.log(null === undefined) // false
 
 在最后一行代码显示“`null` 大于等于 0”的情况下，前两行代码中一定会有一个是正确的，然而事实表明它们的结果都是 false。
 
-因为相等性检查 `==` 和普通比较符 `> < >= <=` 的代码逻辑是相互独立的。进行值的比较时，`null` 会被转化为数字，因此它被转化为了 `0`。这就是为什么（3）中 `null >= 0` 返回值是 true，（1）中 `null > 0` 返回值是 false。
+因为相等性检查 `==` 和普通比较符 `> < >= <=` 的代码逻辑是相互独立的。进行值的比较时，`null` 会被转化为数字，因此它被转化为了 `0`。这就是为什么代码第三行中 `null >= 0` 返回值是 true，第一行中 `null > 0` 返回值是 false。
 
 ```js
 console.log(null > 0) // false
@@ -226,8 +234,8 @@ console.log(null >= 0) // true
 
 `undefined` 不应该被与其他值进行比较
 
-- `(1)` 和 `(2)` 都返回 `false` 是因为 `undefined` 在比较中被转换为了 `NaN`，而 `NaN` 是一个特殊的数值型值，它与任何值进行比较都会返回 `false`。
-- `(3)` 返回 `false` 是因为这是一个相等性检查，而 `undefined` 只与 `null` 相等，不会与其他值相等。
+- 代码第一行和第二行 都返回 `false` 是因为 `undefined` 在比较中被转换为了 `NaN`，而 `NaN` 是一个特殊的数值型值，它与任何值进行比较都会返回 `false`。
+- 代码第三行返回 `false` 是因为这是一个相等性检查，而 `undefined` 只与 `null` 相等，不会与其他值相等。
 
 ```js
 console.log(undefined > 0) // false
@@ -296,7 +304,7 @@ console.log(result) // print -> hello world
 
 
 
-- 多结果从左到右运算到第假值时，返回当前假值并且停止运行
+- 多结果从左到右运算到假值时，返回当前假值并且停止运行
 
 ```js
 const value1 = 1, value2 = 0, value3 = 'hello world'
@@ -318,7 +326,7 @@ console.log(result) // print -> 0
 
 ## ??空值合并运算符
 
-- 当变量同时不为`null`和`undefined`时生效
+- 当变量值同时不为`null`和`undefined`时生效
 
 ```js
 let a
@@ -343,7 +351,7 @@ console.log(a) // 'a'
 
 - 进阶使用
 
->  使用 `??` 序列从一系列的值中选择出第一个非 `null/undefined` 的值
+>  使用 `??` 序列从一系列的值中选择出第一个非 `null`/`undefined` 的值
 
 ```js
 let a = null
@@ -366,7 +374,7 @@ console.log(a || b || c || 'd') // c
 
 - 优先级
 
-> 禁止将 `??` 运算符与 `&&` 和 `||` 运算符一起使用，除非使用括号明确指定了优先级
+> 禁止将 `??` 运算符与 `&&` 或 `||` 运算符一起使用，除非使用括号明确指定了优先级
 
 ```js
 // () > * > || > ??
