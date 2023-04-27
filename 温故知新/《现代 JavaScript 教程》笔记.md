@@ -326,7 +326,7 @@ console.log(result) // print -> 0
 
 ## ??空值合并运算符
 
-- 当变量值同时不为`null`和`undefined`时生效
+- 只要变量值不是`null`或`undefined`时就生效
 
 ```js
 let a
@@ -420,7 +420,7 @@ outer: for (let i = 0; i < 3; i++) {
 
 - 全等`case`的类型判断
 
-> `case`是执行`===`进行匹配，但是当写了`||`这种具有类型判断的时候，会先进行类型转化判断，转化后再进行全等判断
+`case`是执行`===`进行匹配，但是当写了`||`这种具有类型判断的时候，会先进行类型转化判断，转化后再进行全等判断
 
 ```js
 let variable = 0
@@ -448,7 +448,7 @@ switch (variable) {
 
 - 无`break`的问题
 
-> 代码会在`case`匹配成功后继续往下执行，直到运行到break或最后
+代码会在`case`匹配成功后继续往下执行，直到运行到break或最后
 
 ```js
 let variable = 1
@@ -467,7 +467,7 @@ switch (variable) {
 
 
 
-#### case分组
+- case分组
 
 如果想让两个`case`执行同一个方法，可以按照以下写法（实际还是利用**无break的问题**）
 
@@ -484,7 +484,7 @@ switch (variable) {
     console.log(2) // 执行
     break
   default:
-    console.log('default') // 所以case不匹配时才执行
+    console.log('default') // 所有case不匹配时才执行
 }
 ```
 
@@ -560,9 +560,11 @@ showName(0)
 
 ```js
 const doNothing = () => {}
+
 // function doNothing(){
 //   return
 // }
+
 console.log(doNothing() === undefined) // true
 ```
 
@@ -591,13 +593,20 @@ function sayHi(name) {
 - 函数表达式
 
 ```js
-// 失败，变量未赋值
+// 失败，sayHi变量未赋值
 sayHi('pd') // Cannot access 'sayHi' before initialization
 
 let sayHi = function(name) {
   console.log( `Hello, ${name}` )
 }
 
+// 箭头函数都是一样的
+// const sayHi = name => {
+//   console.log(`Hello, ${name}`)
+// }
+```
+
+```js
 // 正常执行
 let sayHi = function(name) {
   console.log( `Hello, ${name}` )
@@ -632,14 +641,16 @@ console.log(obj) // { age: 18, gender: 0 }
 
 ### in操作符
 
-> 用于检测某一key是否存在
+- 用于检测某一key是否存在（管你赋什么值，只要存在就为`true`。）
 
 ```js
 let obj = {
   uname: undefined
 }
 
-console.log(obj.age) // 如果不存在则返回 undefined
+// 如果不存在则返回 undefined
+console.log(obj.age)
+
 // 判断某一 key 是否存在
 if(obj.age === undefined) console.log('不存在')
 else console.log('存在')
@@ -652,19 +663,21 @@ console.log('uname' in obj) // true
 
 ### 方括号`[]`
 
-> 基础使用
+- 基础使用
 
 ```js
 let girl = {
   'She is a beautiful girl': true
 }
-console.log(girl['She is a beautiful girl']) // true
+const keyName = 'She is a beautiful girl'
 
+console.log(girl['She is a beautiful girl']) // true
+console.log(girl[keyName]) // true
 ```
 
 
 
-> 计算属性
+- 计算属性
 
 ```js
 let fruit = 'banana'
@@ -674,9 +687,9 @@ let bag = {
 }
 
 console.log(bag.banana) // 7
-console.log(bag.orange) // undefined
+console.log(bag.fruit) // undefined
 
-// 计算属性的复杂写法
+// 计算属性的复杂写法演示
 let fruit = 'apple';
 let bag = {
   [fruit + 'Computers']: 5
@@ -686,23 +699,25 @@ console.log(bag) // { appleComputers: 5
 
 
 
-> 计算属性的另一种写法
+- 计算属性的另一种写法
 
 ```js
 let fruit = 'tomato'
 let bag = {}
 
-// key = fruit 变量的 value
+// key = 变量fruit的value
 bag[fruit] = 5
 
 console.log(bag) // { tomato: 5 }
 ```
 
+> 利用计算属性可做动态变量并赋值
+
 
 
 ### 属性名称限制
 
-> 属性命名没有限制。属性名可以是任何字符串或者 symbol，其他类型会被自动地转换为字符串。
+> 属性命名没有限制。属性名可以是任何字符串或者 `symbol`，其他类型会被自动地转换为字符串。
 
 ```js
 let obj = {
@@ -745,16 +760,17 @@ for (const key in nums) {
 
 ```js
 let nums = {
-  // 添加符号 + 
+  // 添加自定义符号 + （必须所有key都加上，少一个都不行。）
   '+2': 2,
   '+3': 3,
   '+1': 1
 }
 
 for (const key in nums) {
-  // 添加符号 + 
+  // 前面加上自定义符号 
+  console.log(key) // +2 +3 +1
   console.log(+key) // 2 3 1 此时转换为 Number
-  // console.log(nums[key]) // 2 3 1 这里不需要再写 + 
+  console.log(nums[key]) // 2 3 1 这里不需要再写 + 
 }
 ```
 
@@ -777,7 +793,7 @@ for (const key in users) {
 
 
 
-## 对象的引用和复制
+## 对象的引用和赋值
 
 ### 引用
 
@@ -798,13 +814,13 @@ console.log(obj3 === obj2) // true
 
 ### 克隆与合并
 
-对象直接赋值给其他变量是属于引用地址值，不属于复制。
+对象直接赋值给其他变量是属于引用地址值，不属于赋值。
 
 简而言之，就是在两个对象（两个地址值）中把其中一个对象的属性添加到另一个对象。
 
 #### 浅克隆
 
-> 最原始的方式
+- 最原始的方式
 
 ```js
 let user = {
@@ -825,7 +841,7 @@ console.log(clone === user) // false
 
 
 
-> Object.assign()
+- Object.assign()
 
 替代最原始的方式
 
@@ -845,8 +861,9 @@ console.log(clone == user) // false
 console.log(clone === user) // false
 ```
 
+简写
+
 ```js
-// 简写
 let user = {
   name: 'pd',
   age: 18
@@ -855,7 +872,7 @@ let clone = Object.assign({}, user)
 let clone2 = Object.assign({ ...user })
 ```
 
-如果key重复则覆盖
+如果和原有的key重复则会覆盖
 
 ```js
 let user = { name: 'pd' };
@@ -869,7 +886,7 @@ console.log(user.name) // 现在 user = { name: 'xd' }
 
 #### 深克隆
 
-> 问题所在
+- 存在的问题
 
 ```js
 let user = { // 引用一个地址值
@@ -895,7 +912,7 @@ console.log(clone.skill.isRap) // false
 
 
 
-> 解决方式
+- 解决方式之一
 
 ```js
 let user = { // 引用一个地址值
@@ -907,7 +924,7 @@ let user = { // 引用一个地址值
   }
 }
 let clone = JSON.parse(JSON.stringify(user))
-// let clone2 = _.cloneDeep(user) // Lodash写法
+// let clone2 = _.cloneDeep(user) // Lodash写法（推荐）
 
 console.log(clone == user) // false
 console.log(clone === user) // false
@@ -918,6 +935,10 @@ console.log(clone.skill === user.skill) // false
 user.skill.isRap = false
 console.log(clone.skill.isRap) // true
 ```
+
+> 笑死，除了引用第三方依赖，目前没有这么简单的完美方法。
+>
+> 上诉代码深克隆方法中，对于`new Date`、`symbol`、`undefined`、`NaN`、无穷大、无穷小、原型等等会有错误的处理。
 
 
 
@@ -944,8 +965,7 @@ function User (name) {
 let user = new User('pd')
 let user2 = new User('xd')
 
-// User { name: 'pd', isAdmin: false } User { name: 'xd', isAdmin: false }
-console.log(user, user2)
+console.log(user, user2) // User { name: 'pd', isAdmin: false } User { name: 'xd', isAdmin: false }
 ```
 
 
@@ -955,14 +975,14 @@ console.log(user, user2)
 无法重复使用
 
 ```js
-// 不能接收实参
-let user = new function() {
-  this.name = 'pd'
-  this.isAdmin = false
-}
+  // 不能接收实参
+  let user = new function() {
+    this.name = 'pd'
+    this.isAdmin = false
+  }
 
-// 不能写括号调用，所以也不能传递参数
-console.log(user) // { name: 'pd', isAdmin: false }
+  // 因为是变量名，所以不能写括号调用，所以也不能传递参数。
+  console.log(user) // { name: 'pd', isAdmin: false }
 ```
 
 
@@ -1028,7 +1048,7 @@ console.log(new User().name) // xd
 ```js
 function User (name) {
   this.name = name
-  this.sayHi = () => console.log("My name is: " + this.name) // 就添加个函数而已
+  this.sayHi = () => console.log("My name is: " + this.name) 
 }
 
 let con = new User('pd')
@@ -1040,7 +1060,7 @@ con.sayHi()
 
 ### 省略括号
 
-> 如果不需要传递参数，则可以去掉括号。
+> 如果不需要传递参数和调用里面的方法，则可以去掉括号。
 
 ```js
 let user = new User
@@ -1052,22 +1072,20 @@ let user = new User()
 
 ## 可选链?.
 
-> 问题：如果返回值为`undefined`或者`null`是，则代码可能报错，使用**可选链**则可以让代码强制返回`undefined`。
->
-> 解决：可选链检查左边部分是否为 `null/undefined`，如果不是则继续运算，如果是则统一返回`undefined`
+问题：如果返回值为`undefined`或者`null`，则代码可能报错，使用**可选链**则可以让代码强制返回`undefined`。
+
+解决：可选链检查左边部分是否为 `null`/`undefined`，如果不是则继续运算，如果是则统一返回`undefined`
 
 ```js
 let user = {}
 
 // console.log(user.address.street.name) // 报错
 console.log(user?.address?.street?.name) // 返回undefined
-
-/* 
-  不要过度使用可选链
-    如果 user 对象必须存在，但 address 是可选的，那么我们应该这样写 user.address?.street，而不是这样 user?.address?.street。
- */
-
 ```
+
+> 不要过度使用可选链
+>
+> > 如果 user 对象必须存在，但 address 是可选的，那么我们应该这样写` user.address?.street`，而不是这样 `user?.address?.street`。
 
 
 
