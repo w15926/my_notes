@@ -59,16 +59,20 @@ git push -u origin main
 
 
 
-# 常见报错
+# GitHub
 
-fatal: The current branch V2.2 has no upstream branch.
-To push the current branch and set the remote as upstream, use
+## 常见报错
+
+### 提交
+
+- fatal: The current branch V2.2 has no upstream branch.
+  To push the current branch and set the remote as upstream, use
 
     git push --set-upstream origin V2.2
 
 
 
-## remote: Support for password authentication was removed on August 13, 2021. 
+- remote: Support for password authentication was removed on August 13, 2021. 
 
 1. 生成个人访问令牌
 
@@ -96,7 +100,9 @@ git clone https://<your_token>@github.com/<your_user_name>/<your_project>.git
 
 
 
-## Git克隆时报错：abort: repository xxx not found（访问不了Github）
+### 克隆
+
+- abort: repository xxx not found（访问不了Github）
 
 1. 修改host文件，添加 Github 相关域名的绑定。
 
