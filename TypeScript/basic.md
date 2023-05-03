@@ -1,3 +1,7 @@
+> 本篇笔记不适合没有后端基础的人群或者懒的人群。
+
+
+
 # 环境
 
 - 安装
@@ -16,7 +20,7 @@ tsc -v
 
 # 编译
 
-会转换成x x x.js，和javac一样转换成class后执行
+会转换成x x x.js，和javac一样转换成class后执行。
 
 ```shell
 tsc xxx.ts
@@ -26,9 +30,9 @@ tsc xxx.ts
 
 ## 全局变量提示
 
-TS编译的时候会对变量进行全局声明，即”a“文件里声明变量`a`后再在“b”文件里声明变量`a`会报错提示变量已经声明
+TS编译的时候会对变量进行全局声明，即A文件里声明变量`a`后再在B文件里声明变量`a`会报错，并提示变量已经声明。
 
-解决方式一：
+解决方式之一：
 
 ```tsx
 export {} // 取消 “无法重新声明块范围变量” 提示
@@ -604,3 +608,122 @@ myBaby = {
 > > strictNullChecks
 > >
 > > > 是否开启对空值进行严格的检查，默认为false。
+
+
+
+## webpack
+
+### 正常模式配置
+
+>  顺便包含了一些非TS相关的配置，在Vue脚手架中不需要这些，因为都帮你配置好了。
+>
+> 在完整项目的正常模式配置当中，继续增加“跨域配置”与“相对路径配置”即可。
+
+
+
+#### 基础配置
+
+```shell
+npm i -D webpack webpack-cli typescript ts-loader
+```
+
+webpack.config.js
+
+```js
+const path = require('path');
+
+module.exports = {
+  mode: "production", // development/production
+  // 指定入口文件
+  entry: './src/index.ts',
+  // 指定打包后文件所在目录
+  output: {
+    // 指定打包后的文件夹名
+    path: path.resolve(__dirname, 'dist'),
+    // 打包前先清空目录，默认为false。（webpack5以下的版本不支持）
+    clean: true,
+    // 指定打包后的文件名
+    filename: 'bundle.js'
+  },
+  // 设置支持的模块扩展名从而保证import和export可用，默认为 .js 。
+  resolve: {
+    extensions: ['.ts', '.js']
+  },
+  // 指定打包时使用的模块
+  module: {
+    // 指定打包时使用的规则
+    rules: [
+      {
+        // 指定打包时生效的文件
+        test: /\.ts$/,
+        // 指定对应的loader
+        use: 'ts-loader',
+        // 指定排除的文件
+        exclude: /node_modules/
+      }
+    ]
+  }
+}
+```
+
+> 运行时在package.json文件里`scripts`节点下加上`"build": "webpack"`，最后运行`npm run build`即可。
+
+
+
+#### 指定自动引用编译后的JS文件
+
+```shell
+npm i -D html-webpack-plugin
+```
+
+webpack.config.js
+
+```js
+const HtmlWebpackPlugin = require('html-webpack-plugin');
+
+module.exports = {
+  mode: "production", // development/production
+  output: {
+    // ...
+  },
+  module: {
+    // ...
+  },
+  // 配置webpack插件
+  plugins: [
+    new HtmlWebpackPlugin({
+      // 声明template时无效
+      title: '网页标签页标题', 
+      // 自定义使用哪个html模版在里面修改，没有则会创建一个index.html
+      template: './src/index.html' 
+    })
+  ],
+}
+```
+
+
+
+#### 开启开发时的本地服务
+
+```shell
+npm i -D webpack-dev-server
+```
+
+package.json
+
+```json
+  "scripts": {
+    "serve": "webpack serve --open",
+    // ...
+  },
+```
+
+> 新增一条serve即可，`--open`为可选，代表运行后是否自动打开，最后直接运行`npm run serve`即可。
+
+
+
+#### babel
+
+
+
+### Vue模式配置
