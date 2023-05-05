@@ -1,3 +1,7 @@
+> 更多见：TypeScript/basic.md
+
+
+
 # 安装
 
 **全局安装**

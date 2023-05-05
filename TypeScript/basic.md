@@ -643,7 +643,12 @@ module.exports = {
     // 打包前先清空目录，默认为false。（webpack5以下的版本不支持）
     clean: true,
     // 指定打包后的文件名
-    filename: 'bundle.js'
+    filename: 'bundle.js',
+    // 环境设置
+    environment:{
+       // 打包后是否存在于箭头函数里（兼容IE才需要设置false）
+      arrowFunction: false,
+    }
   },
   // 设置支持的模块扩展名从而保证import和export可用，默认为 .js 。
   resolve: {
@@ -724,6 +729,208 @@ package.json
 
 #### babel
 
+```shell
+npm i -D html-webpack-plugin @babel/core @babel/cli @babel/preset-env babel-loader core-js
+```
+
+webpack.config.js
+
+```js
+  module: {
+    // 指定打包时使用的规则
+    rules: [
+      {
+        // 指定打包时生效的文件
+        test: /\.ts$/,
+        // 指定对应的loader
+        use: [
+          'babel-loader', // 使用默认的babel配置
+          'ts-loader'
+        ],
+        // 指定排除的文件
+        exclude: /node_modules/
+      }
+    ]
+  },
+```
+
+```js
+  module: {
+    // 指定打包时使用的规则
+    rules: [
+      {
+        // 指定打包时生效的文件
+        test: /\.ts$/,
+        // 指定对应的loader
+        use: [
+          'babel-loader', // 使用默认的babel配置
+          'ts-loader'
+        ],
+        // 指定排除的文件
+        exclude: /node_modules/
+      }
+    ]
+  },
+```
+
+
+
+#### 完整代码
+
+```shell
+npm i -D webpack webpack-cli typescript ts-loader @babel/core @babel/cli @babel/preset-env babel-loader core-js
+```
+
+webpack.config.js
+
+```js
+const path = require('path');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
+
+module.exports = {
+  mode: "production", // development/production
+  // 指定入口文件
+  entry: './src/index.ts',
+  // 指定打包后文件所在目录
+  output: {
+    // 指定打包后的文件夹名
+    path: path.resolve(__dirname, 'dist'),
+    // 打包前先清空目录，默认为false（webpack5以下的版本不支持）。
+    clean: true,
+    // 指定打包后的文件名
+    filename: 'bundle.js',
+    // 环境设置
+    environment: {
+      // 打包后是否存在于箭头函数里（兼容IE才需要设置false）
+      arrowFunction: false,
+    }
+  },
+  // 设置支持的模块扩展名从而保证import和export可用，默认为 .js 。
+  resolve: {
+    extensions: ['.ts', '.js']
+  },
+  // 指定打包时使用的模块
+  module: {
+    // 指定打包时使用的规则
+    rules: [
+      {
+        // 指定打包时生效的文件
+        test: /\.ts$/,
+        // 指定对应的loader
+        use: [
+          // 配置babel
+          {
+            loader: 'babel-loader',
+            options: {
+              // 设置预定义的环境
+              presets: [
+                [
+                  // 指定环境的插件
+                  '@babel/preset-env',
+                  // 配置信息
+                  {
+                    targets: {
+                      // 兼容的浏览器版本
+                      'chrome': '58',
+                      'ie': '11',
+                      'edge': '17',
+                      'safari': '10',
+                      'firefox': '60'
+                    },
+                    // 指定core-js版本
+                    "corejs": "3",
+                    // 使用 corejs 的方式
+                    "useBuiltIns": "usage", // 按需加载 
+                  }
+                ]
+              ]
+            }
+          },
+          'ts-loader'
+        ],
+        // 指定排除的文件
+        exclude: /node_modules/
+      }
+    ]
+  },
+  // 配置webpack插件
+  plugins: [
+    new HtmlWebpackPlugin({
+      // title: '网页标签页标题',
+      template: './src/index.html'
+    })
+  ],
+}
+```
+
+package.json
+
+```json
+  "scripts": {
+    "serve": "webpack serve --open",
+    "build": "webpack"
+  },
+```
+
 
 
 ### Vue模式配置
+
+
+
+# class
+
+> JS本就是面向对象，以下用只是我TS再复习一遍。
+
+- 声明、读取、修改
+
+```tsx
+// 定义一个Person类
+class Person {
+  // 定义实例属性
+  name: string = '只因'
+  // 定义类属性（静态属性）
+  static age: number = 18
+  // 定义只读实例属性
+  readonly sex: string = '男'
+  static readonly hobbies: string = '唱、跳、rap'
+}
+
+const per = new Person()
+console.warn(per);
+console.warn(per.name); // 访问实例属性方法
+console.warn(Person.age); // 访问静态属性方法
+
+per.name = '坤坤'
+Person.age = 20
+// per.sex = '女' // 只读无法修改
+```
+
+
+
+- 方法
+
+```tsx
+class Person {
+  name: string = '只因'
+  static age: number = 18
+  readonly sex: string = '男'
+  static readonly hobbies: string = 'sing、dance、rap'
+
+  sayHi(): void {
+    console.log('Hi, my name is ' + this.name);
+  }
+
+  static getHobbies(): void {
+    console.log('I like ' + Person.hobbies);
+
+  }
+}
+
+const per = new Person()
+per.sayHi()
+Person.getHobbies()
+```
+
+
+
