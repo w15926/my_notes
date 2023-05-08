@@ -1010,7 +1010,7 @@ class Dog extends Pet {
 
   // 由于继承后名字一样会重写，所以需要super。
   constructor(name: string, age: number) {
-    super(name)
+    super(name) // 重写父类里的name
     this.age = age
   }
 
@@ -1023,5 +1023,56 @@ class Dog extends Pet {
 
 const dog = new Dog('旺财', 2)
 dog.sayHi() // Hi, my name is 旺财 and I am 2 years old.
+```
+
+
+
+## 抽象类
+
+- 用`sbstract`声明后无法被`new`
+
+```ts
+abstract class Pet {
+  name: string
+
+  constructor(name: string) {
+    this.name = name
+  }
+}
+
+class Dog extends Pet {
+}
+
+// const pig = new Pet() // 报错：无法创建抽象类的实例
+```
+
+
+
+- 抽象方法
+
+```tsx
+abstract class Pet {
+  name: string
+
+  constructor(name: string) {
+    this.name = name
+  }
+
+  // 定义一个抽象方法（只能存在于抽象类里），抽象方法只能声明变量名和返回值（没有方法体）。
+  abstract sayHi(): void
+}
+
+class Dog extends Pet {
+
+  // 如果父类存在抽象方法，那么子类必须要重写。
+  sayHi(): void {
+    const msg = 'Hi, my name is ' + this.name
+    console.log(msg);
+    return
+  }
+}
+
+const dog = new Dog('小dog')
+dog.sayHi()
 ```
 
