@@ -880,9 +880,9 @@ package.json
 
 # class
 
-> JS本就是面向对象，以下用只是我TS再复习一遍。
+> JS本本就是面向对象，以下用只是我TS再复习一遍。
 
-- 声明、读取、修改
+## 声明、读取、修改
 
 ```tsx
 // 定义一个Person类
@@ -908,7 +908,7 @@ Person.age = 20
 
 
 
-- 方法
+## 方法
 
 ```tsx
 class Person {
@@ -933,4 +933,95 @@ Person.getHobbies()
 ```
 
 
+
+## 构造函数
+
+```tsx
+class Pet {
+  name: string
+  // 构造函数在对象创建时调用
+  constructor(name: string) {
+    this.name = name
+  }
+}
+const pet = new Pet('小白')
+```
+
+
+
+## 继承、重写
+
+```tsx
+// 父类
+class Pet {
+  name: string
+  age: number
+
+  constructor(name: string, age: number) {
+    this.name = name
+    this.age = age
+  }
+
+  sayHi(): string {
+    const msg = 'Hi, my name is ' + this.name
+    console.log(msg)
+    return msg
+  }
+}
+
+// 子类
+class Dog extends Pet {
+  // 名字相同会重写，包括构造函数也是。
+  sayHi(): string {
+    const msg = '你瞅啥？'
+    console.log(msg)
+    return msg
+  }
+}
+
+// 子类
+class Cat extends Pet {
+}
+
+const dog = new Dog('旺财', 2)
+const cat = new Cat('大橘', 2)
+
+dog.sayHi() // 你瞅啥？
+cat.sayHi() // Hi, my name is 大橘
+```
+
+
+
+## super
+
+```tsx
+class Pet {
+  name: string
+
+  constructor(name: string) {
+    this.name = name
+  }
+}
+
+class Dog extends Pet {
+  age: number
+
+  // super.sayHi() // 子类调用父类里的某个方法
+
+  // 由于继承后名字一样会重写，所以需要super。
+  constructor(name: string, age: number) {
+    super(name)
+    this.age = age
+  }
+
+  sayHi(): string {
+    const msg = 'Hi, my name is ' + this.name + ' and I am ' + this.age + ' years old.'
+    console.warn(msg)
+    return '汪汪汪'
+  }
+}
+
+const dog = new Dog('旺财', 2)
+dog.sayHi() // Hi, my name is 旺财 and I am 2 years old.
+```
 

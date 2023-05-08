@@ -57,6 +57,7 @@ sudo xattr -r -d com.apple.quarantine /Applications/IntelliJ IDEA.app
 ```
 
 
+
 # 无法打开“xxx.app”，因为Apple无法检查其是否包含恶意软件。 
 
 按住 Control 键点按 App 图标，然后从快捷键菜单中选取“打开”。
