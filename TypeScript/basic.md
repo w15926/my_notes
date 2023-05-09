@@ -143,6 +143,14 @@ let myVar: myType;
 let myVar2: myType2;
 ```
 
+```tsx
+type myType = {
+  name: string,
+  age: number,
+  sayHi: () => string
+}
+```
+
 
 
 
@@ -880,7 +888,7 @@ package.json
 
 # class
 
-> JS本本就是面向对象，以下用只是我TS再复习一遍。
+> JS本本就是面向对象，但没有TS定义的丰富，以下是拿TS再学习一遍。
 
 ## 声明、读取、修改
 
@@ -1074,5 +1082,107 @@ class Dog extends Pet {
 
 const dog = new Dog('小dog')
 dog.sayHi()
+```
+
+
+
+## 接口
+
+- 如果仅作为类型使用则和`type`一样
+
+```tsx
+type myType = {
+  name: string,
+  age: number,
+  sayHi(): string
+}
+
+interface myInterface { // 注意没有没有等于号
+  name: string,
+  age: number,
+  sayHi(): string
+}
+
+const obj: myType = {
+  name: 'pd',
+  age: 18,
+  sayHi() {
+    return 'hello'
+  }
+}
+
+const obj2: myInterface = {
+  name: 'pd',
+  age: 18,
+  sayHi() {
+    return 'hello'
+  }
+}
+```
+
+
+
+- 与`type`的区别
+
+同一`type`无法重复声明
+
+```tsx
+type myType = {
+  name: string,
+  age: number
+}
+
+// 报错：标识符“myType”重复声明
+// type myType = {}
+```
+
+同一接口可以重复声明，会自动合并参数。
+
+```tsx
+interface myInterface {
+  name: string,
+  age: number
+}
+
+interface myInterface {
+  sex: string
+}
+
+const obj: myInterface = {
+  name: 'pd',
+  age: 18,
+  sex: 'female' // 因为合并，所以要存在。
+}
+```
+
+
+
+- 接口的使用
+
+接口用于规范类的结构而实用，接口中存在的所有东西必须进行重写。
+
+```tsx
+interface myInterface {
+  name: string
+  age: number
+  sayHi: () => string
+}
+
+class myClass implements myInterface {
+  name: string
+  age: number
+
+  constructor(name: string, age: number) {
+    this.name = name
+    this.age = age
+  }
+
+  sayHi(): string {
+    return 'Hi, my name is ' + this.name
+  }
+}
+
+const test = new myClass('Pp', 12)
+console.warn(test.sayHi()) // Hi, my name is Pp
 ```
 
