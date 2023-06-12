@@ -466,6 +466,24 @@ myBaby = {
 
 
 
+# 其他
+
+## 非空断言
+
+```tsx
+class Food {
+  element: HTMLElement
+
+  constructor() {
+    this.element = document.querySelector('.food')!
+  }
+}
+```
+
+> 最后的叹号为强制非空断言，代码中代表此元素肯定会存在。
+
+
+
 # 编译选项
 
 ## 自动编译（热部署）
@@ -669,7 +687,7 @@ module.exports = {
       {
         // 指定打包时生效的文件
         test: /\.ts$/,
-        // 指定对应的loader
+        // 指定对应的loader 多的话用数组，数组里执行顺序为倒序执行
         use: 'ts-loader',
         // 指定排除的文件
         exclude: /node_modules/
@@ -888,7 +906,7 @@ package.json
 
 # class
 
-> JS本本就是面向对象，但没有TS定义的丰富，以下是拿TS再学习一遍。
+> JS本就是面向对象，但没有TS定义的丰富，以下是拿TS再结合学习一遍。
 
 ## 声明、读取、修改
 
@@ -1186,3 +1204,141 @@ const test = new myClass('Pp', 12)
 console.warn(test.sayHi()) // Hi, my name is Pp
 ```
 
+
+
+## 属性封装
+
+- 权限修饰符与基本使用
+
+```tsx
+class PetBaby {
+  public name: string; // 公共属性，默认就是public。
+  private age: number; // 私有属性，只能在此方法内修改（子也不行）。
+  // #age: number; // pravite简写为#，注意直接没有空格。
+  // protected age: number; // 私有属性，但是可以在子类中访问。
+
+  constructor(name: string) {
+    this.name = name;
+  }
+
+  // 虽然private属性只能在方法内使用,但是可以通过方法访问或设置
+  getAge(): number {
+    return this.age;
+  }
+  setAge(age: number): void {
+    if (age < 0) {
+      console.warn('age不能小于0');
+      return
+    }
+    this.age = age;
+    this.age = age;
+  }
+   
+}
+
+// const dog = new PetBaby('pd')
+// console.warn(dog) // {name: 'pd'}
+
+const dog = new PetBaby('pd')
+dog.setAge(1)
+console.warn(dog) // {name: 'pd', age: 1}
+```
+
+- get与set的进阶使用
+
+```tsx
+class PetBaby {
+  name: string;
+  #age: number;
+
+  constructor(name: string) {
+    this.name = name;
+  }
+
+  // 默认会对每个属性隐式生成以下get、set代码
+  get age(): number {
+    console.warn('调用了get')
+    return this.#age;
+  }
+  set age(value: number) {
+    console.warn('调用了set')
+    this.#age = value;
+  }
+
+}
+
+const dog = new PetBaby('pd')
+dog.age = 1
+console.warn(dog.age)
+```
+
+- 属性封装的简写
+
+正常写法
+
+```tsx
+class PetBaby {
+  name: string;
+  age: number;
+  constructor(name: string, age: number) {
+    this.name = name;
+    this.age = age
+  }
+}
+```
+
+简写
+
+```tsx
+class PetBaby {
+  constructor(public name: string, public age: number) {
+  }
+}
+const dog = new PetBaby('pd', 1)
+console.warn(dog) // {name: 'pd', age: 1}
+```
+
+
+
+## 泛型
+
+在定义函数或者类时，如遇到类型不明确就可以使用泛型。
+
+- 基础使用
+
+可以直接调用具有泛型的函数
+
+```tsx
+function fn<T>(params: T) {
+  return params;
+}
+
+const result = fn('hello') // 不指定泛型类型，TS会根据推断，此时变量类型为string。
+console.warn(result, typeof result) // hello string
+const res = fn<number>(666) // 指定泛型类型，此时变量类型为number
+console.warn(res, typeof res) // 666 'number'
+```
+
+```tsx
+function fn<T, K>(key: T, key2: K): [T, K] {
+  return [key, key2];
+}
+const res = fn<string, number>('hello', 666)
+console.warn(res, typeof res) // ['hello', 666] 'object'
+```
+
+- 进阶使用
+
+```tsx
+interface FixedParams {
+  length: number
+}
+
+function fn<T extends FixedParams>(num: T): number {
+  return num.length;
+}
+
+console.warn(fn({ length: 1 })) // 1
+```
+
+> 注意，不论是使用类还是接口，在泛型里统一使用`extends`。
