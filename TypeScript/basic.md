@@ -484,6 +484,22 @@ class Food {
 
 
 
+## HTMLElement类型
+
+```tsx
+class Food {
+  private element: HTMLElement
+
+  constructor() {
+    this.element = document.querySelector('.food')!
+  }
+}
+```
+
+> 显而易见，这是获取DOM的东西。
+
+
+
 # 编译选项
 
 ## 自动编译（热部署）

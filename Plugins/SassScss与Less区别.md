@@ -18,6 +18,8 @@ npm i sass-loader node-sass --save-dev
 npm install less less-loader --save-dev
 ```
 
+> 注意：loader在vite中可以不用安装进行使用。
+
 
 
 # 区别
