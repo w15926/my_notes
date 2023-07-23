@@ -1,7 +1,3 @@
-> 本篇笔记不适合没有后端基础的人群或者懒的人群。
-
-
-
 # 环境
 
 - 安装
@@ -1071,7 +1067,7 @@ dog.sayHi() // Hi, my name is 旺财 and I am 2 years old.
 
 ## 抽象类
 
-- 用`sbstract`声明后无法被`new`
+- 用`abstract`声明后无法被`new`
 
 ```ts
 abstract class Pet {
