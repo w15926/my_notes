@@ -1,3 +1,12 @@
+# 创建
+
+```shell	
+npm create vue@latest
+```
+
+> 创建的项目将使用基于 [Vite](https://vitejs.dev/) 
+
+
 
 # 生命周期
 
@@ -121,7 +130,7 @@ export default {
 
 
 
-#### ref实例展示 - 引用使用
+#### ref实例展示 - 复制使用
 
 实为复制，原数据不会发生改变。
 
@@ -239,7 +248,7 @@ export default {
 
 
 
-#### toRef实例展示 - 引用使用
+#### toRef实例展示 - 复制使用
 
 原属性obj与state值发生变化，界面不更新。
 
@@ -270,7 +279,7 @@ export default {
 
 #### toRefs实例展示
 
-相当于对目标对象自动全部使用toRef
+相当于对目标对象自动全部使用toRef的直接使用
 
 ```vue
 <script>
@@ -355,7 +364,7 @@ export default {
     let { state, remove } = useRemove() // 解构调用，直接实现模块化
     let { state2, add } = useAdd(state) // 可以用传参方法调用上一行方法内的属性
 
-    return { state, removeStudent, state2, addStudent }
+    return { state, remove, state2, add }
   }
 }
 ```
@@ -392,6 +401,7 @@ export default {
 ```vue
 <template>
   <Son ref="ref_son" />
+  <Son2 ref="ref_son2" />
 </template>
 
 <script>
@@ -405,6 +415,7 @@ export default {
   },
   setup () {
     const ref_son = ref(null)
+    const ref_son2 = ref(null)
 
     onMounted(() => {
       init()
@@ -416,7 +427,8 @@ export default {
     }
 
     return {
-      ref_son
+      ref_son,
+      ref_son2
     }
 
   }
@@ -711,16 +723,16 @@ export default {
 
 #### 方式二
 
-有了方法一作为参考，那么方法二中受变化的只有子组件。
-
 ```vue
 <template>
+	<son @text="text" :xxx="xxx"></son>
   <h1>{{ props.text }}</h1>
 </template>
 
 <script setup>
 import { onMounted } from 'vue';
 
+// 子组件接收父组件:传值
 const props = defineProps({
   text: {
     type: String,
@@ -728,9 +740,15 @@ const props = defineProps({
   },
 })
 
+// 子组件发送
 const emit = defineEmits(['msg', 'res'])
 emit('msg', 'Hello World')
 emit('res', 'resresresres')
+  
+// 获取子组件传递的值  
+const text = val => {
+  
+}
 
 </script>
 ```
@@ -766,6 +784,8 @@ export const formatter = str => {
   return str.slice(0, 4) + '年' + str.slice(4, 6) + '月' + str.slice(6, 8) + '日'
 }
 ```
+
+> 子组件使用语法糖时，父组件用ref无法直接调用子组件里的方法，此时需要在子组件中使用`defineExpose({})`暴露方法出去即可。
 
 
 
@@ -844,6 +864,18 @@ onMounted(() => {
 })
 
 </script>
+```
+
+
+
+### 关于require导入文件
+
+```js
+  // vue2使用 require 导入文件
+  // const module = require('/public/map.json')
+
+  // vue3使用 import 导入文件
+  const module = await import('/public/map.json')
 ```
 
 

@@ -93,7 +93,7 @@ border-right: 50px solid blueviolet;
 
 # 滚动条自定义
 
-> overflow-y: overlay;可以让滚动条不挤压样式
+> overflow-y: overlay;可以让滚动条不挤压样式，而是覆盖在内容之上。**（Chrome14以后被浏览器淘汰，不再生效。）**
 
 悬浮显示滚动条
 

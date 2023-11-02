@@ -1,4 +1,4 @@
-> 更多见：TypeScript/basic.md
+> 更多见：../TypeScript/basic.md
 
 
 
