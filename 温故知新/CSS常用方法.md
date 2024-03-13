@@ -117,3 +117,36 @@ border-right: 50px solid blueviolet;
     }
 ```
 
+
+
+# input标签
+
+- 设置placeholder颜色
+
+```scss
+input {
+  &::placeholder {
+    color: #ccc;
+  }
+}
+```
+
+
+
+- 去除type为number时的上下箭头
+
+```scss
+input {
+  // 正常
+  &::-webkit-outer-spin-button,
+  &::-webkit-inner-spin-button {
+    -webkit-appearance: none;Ï
+  }
+}
+
+// 火狐
+input[type="number"] {
+  -moz-appearance: textfield;
+}
+```
+
