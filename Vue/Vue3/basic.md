@@ -436,7 +436,21 @@ export default {
 </script>
 ```
 
-> 唯一要注意的就是变量名与ref绑定的名字要一致
+> 注意
+>
+> > 变量名与ref绑定的名字要一致
+> >
+> > 如果子组件的setup写在script里，则需要在子组件里单独设置需要被调用ref的方法，如
+> >
+> > ```js
+> > const init = async () => {
+> > 
+> > }
+> > 
+> > defineExpose({
+> >   init
+> > })
+> > ```
 
 
 
