@@ -8,6 +8,14 @@ npm create vue@latest
 
 
 
+老版本2.x
+
+```shell
+vue create xxx
+```
+
+
+
 # 生命周期
 
 - `beforeCreate` -> `setup()`
