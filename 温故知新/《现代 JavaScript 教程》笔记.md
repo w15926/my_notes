@@ -326,6 +326,8 @@ console.log(result) // print -> 0
 
 ## ??空值合并运算符
 
+一句话概括和“或”的区别：使用 `||` 时，任何假值（`0`、`""`、`false`、`NaN` 等）都会导致返回第二个操作数，使用 `??` 时，仅当第一个操作数是 `null` 或 `undefined` 时才会返回第二个操作数。
+
 - 只要变量值不是`null`或`undefined`时就生效
 
 ```js
@@ -368,6 +370,7 @@ console.log(a ? a : b ? b : c ? c : 'd' ? 'd' : 'd') // c
 // 与 || 比较
 // 区别： || 返回第一个真值，??返回第一个已定义
 console.log(a || b || c || 'd') // c
+console.log(a ?? b ?? c ?? 'd') // 0
 ```
 
 
