@@ -158,3 +158,23 @@ open /etc/hosts  # or sudo vi /etc/hosts
 # End of the section
 ```
 
+
+
+### 443连接失败
+Failed to connect to github.com port 443
+
+- 配置socks5代理
+
+```shell
+git config --global http.proxy socks5 127.0.0.1:7890
+git config --global https.proxy socks5 127.0.0.1:7890
+```
+
+- 配置http代理
+
+```shell
+git config --global http.proxy 127.0.0.1:7890
+git config --global https.proxy 127.0.0.1:7890
+```
+
+> 注意：ip默认为本机，端口为代理软件的端口。
