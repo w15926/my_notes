@@ -1216,7 +1216,7 @@ let id = Symbol('unique')
 console.log(id.toString()) // 'Symbol(unique)'
 
 // 或者获取 symbol.description 属性，只显示描述（description）
-console.log(id.description) // 'unique'
+console.log(id.description) // 'unique' description输出为字符串，且仅用于调试查看，不会影响原本。
 ```
 
 
