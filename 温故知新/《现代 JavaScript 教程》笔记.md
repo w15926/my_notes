@@ -7,6 +7,8 @@
 
 
 
+[toc]
+
 # JavaScript 基础知识
 
 ## 关于标签
