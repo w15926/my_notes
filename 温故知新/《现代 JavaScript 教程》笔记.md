@@ -15,7 +15,7 @@
 
 `<script>`标签如果做直接写代码使用，则每次进入界面都会加载一次。如果做`src`引入使用，则只有第一次使用到会加载，并存入缓存中，其他页面想要相同的脚本就会从缓存中获取而不是下载它。所以文件实际上只会下载一次。
 
-> 如果使用了`src`后还在标签里写代码，则默认不会生效
+> 如果使用了`src`后还在标签里写代码，则整个标签默认不会生效（就是这段代码没鸟用了）
 
 
 
@@ -40,14 +40,14 @@ alert("some code");
 
 ## 交互
 
-关于`alert`、`prompt`、`confirm`，这些方法都是模态的：它们***暂停脚本的执行***，并且不允许用户与该页面的其余部分进行交互，直到窗口被解除。
+关于`alert`、`prompt`、`confirm`，这些方法都是模态的：它们会**暂停脚本的执行**，并且不允许用户与该页面的其余部分进行交互，直到窗口被解除。
 
 
 
 
 ## 数据类型
 ### 关于typeof
->  **typeof null 的结果是 "object"。这是官方承认的 typeof 的行为上的错误，这个问题来自于 JavaScript 语言的早期，并为了兼容性而保留了下来。null 绝对不是一个 object。null 有自己的类型，它是一个特殊值。**
+>  **`typeof null` 的结果是 `object`。这是官方承认的 typeof 的行为上的错误，这个问题来自于 JavaScript 语言的早期，并为了兼容性而保留了下来。null 绝对不是一个 object。null 有自己的类型，它是一个特殊值。**
 
 
 
@@ -85,10 +85,8 @@ alert( +y ) // -2
 // 转化非数字
 alert( +true ) // 1
 alert( +"" )   // 0
-
-let str = '1'
-const temp = +str
-console.log(typeof temp, temp) // => number 1
+alert( +"1" )  // 1
+alert( +"str" )  // NaN
 
 // 等价操作
 console.log(+'1' + +'2')
@@ -220,15 +218,15 @@ console.log(null === undefined) // false
 
 ### null vs 0
 
-在最后一行代码显示“`null` 大于等于 0”的情况下，前两行代码中一定会有一个是正确的，然而事实表明它们的结果都是 false。
-
-因为相等性检查 `==` 和普通比较符 `> < >= <=` 的代码逻辑是相互独立的。进行值的比较时，`null` 会被转化为数字，因此它被转化为了 `0`。这就是为什么代码第三行中 `null >= 0` 返回值是 true，第一行中 `null > 0` 返回值是 false。
-
 ```js
 console.log(null > 0) // false
 console.log(null == 0) // false
 console.log(null >= 0) // true
 ```
+
+在最后一行代码显示“`null` 大于等于 0”的情况下，前两行代码中一定会有一个是正确的，然而事实表明它们的结果都是 false。
+
+因为相等性检查 `==` 和普通比较符 `> < >= <=` 的代码逻辑是相互独立的。进行值的比较时，`null` 会被转化为数字，因此它被转化为了 `0`。这就是为什么代码第三行中 `null >= 0` 返回值是 true，第一行中 `null > 0` 返回值是 false。
 
 
 
@@ -236,15 +234,16 @@ console.log(null >= 0) // true
 
 `undefined` 不应该被与其他值进行比较
 
-- 代码第一行和第二行 都返回 `false` 是因为 `undefined` 在比较中被转换为了 `NaN`，而 `NaN` 是一个特殊的数值型值，它与任何值进行比较都会返回 `false`。
-- 代码第三行返回 `false` 是因为这是一个相等性检查，而 `undefined` 只与 `null` 相等，不会与其他值相等。
-
 ```js
 console.log(undefined > 0) // false
 console.log(undefined < 0) // false
 console.log(undefined == 0) // false
 console.log(undefined === 0) // false
 ```
+
+代码第一行和第二行 都返回 `false` 是因为 `undefined` 在比较中被转换为了 `NaN`，而 `NaN` 是一个特殊的数值型值，它与任何值进行比较都会返回 `false`。
+
+代码第三行返回 `false` 是因为这是一个相等性检查，而 `undefined` 只与 `null` 相等，不会与其他值相等。
 
 
 
@@ -328,7 +327,7 @@ console.log(result) // print -> 0
 
 ## ??空值合并运算符
 
-一句话概括和“或”的区别：使用 `||` 时，任何假值（`0`、`""`、`false`、`NaN` 等）都会导致返回第二个操作数，使用 `??` 时，仅当第一个操作数是 `null` 或 `undefined` 时才会返回第二个操作数。
+一句话概括??和“或”的区别：使用 `||` 时，任何假值（`0`、`""`、`false`、`NaN` 等）都会导致返回第二个操作数，使用 `??` 时，仅当第一个操作数是 `null` 或 `undefined` 时才会返回第二个操作数。
 
 - 只要变量值不是`null`或`undefined`时就生效
 

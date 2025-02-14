@@ -117,7 +117,22 @@ border-right: 50px solid blueviolet;
     }
 ```
 
+默认
 
+```css
+      overflow-x: hidden;
+      overflow-y: scroll;
+
+      &::-webkit-scrollbar {
+        width: 6px;
+        height: 6px;
+
+        &-thumb {
+          background: rgba($color: #0091FF, $alpha: 0.6);
+          border-radius: 3px;
+        }
+      }
+```
 
 # input标签
 
