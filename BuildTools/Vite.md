@@ -27,3 +27,38 @@ npm init vue@latest
 
 
 # Difference from Webpack
+
+
+
+# 打包成ES5
+
+npm
+
+```shell
+npm install vite @vitejs/plugin-legacy -D
+```
+
+vite.config
+
+```shell
+import legacy from '@vitejs/plugin-legacy'
+```
+
+```js
+  plugins: [
+    legacy({
+      targets: ['defaults', 'not IE 11']
+    })
+  ]
+```
+
+package.json
+
+```json
+  "browserslist": [
+    "defaults",
+    "not IE 11"
+  ]
+```
+
+**注意：build失败可以降级vite版本，`"vite": "5.4.11"`，然后重新执行`npm i`。**

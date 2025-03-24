@@ -4,7 +4,7 @@
 npm create vue@latest
 ```
 
-> 创建的项目将使用基于 [Vite](https://vitejs.dev/) 
+> 创建的项目将使用基于 [Vite](https://vitejs.dev/) ，`npm create`是`npm init`的别名。
 
 
 

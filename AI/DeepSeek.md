@@ -1,12 +1,24 @@
 [toc]
 
-# 基础环境
+# ollama
 
-ollama官网https://ollama.com/
+官网https://ollama.com/
+
+查看已安装的模型列表
+
+```shell
+ollama list
+```
 
 运行模型
 
 ```shell
-ollama run deepseek-r1:7b
+ollama run 模型名称
+```
+
+终端取消会话
+
+```shell
+/bye
 ```
 
