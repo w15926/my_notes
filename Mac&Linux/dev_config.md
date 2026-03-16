@@ -25,6 +25,20 @@ open .zshrc
  open ~/.zshrc
 ```
 
+没有`.zshrc`则先创建
+
+```shell
+touch .zshrc
+```
+
+电脑重启自动执行`source ~/.bash_profile`
+
+```shell
+source ~/.bash_profile
+```
+
+
+
 
 
 # 端口

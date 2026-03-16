@@ -51,7 +51,7 @@ alert("some code");
 
 
 
-### 关基础运算符，数学
+### 关于基础运算符，数学
 
 #### 数字型转换
 
@@ -262,7 +262,7 @@ if (0 || 1) { // 0经过类型转换成fasle， 1成true
 
 
 
-- 多结果为`true`时只返回**第一个**
+- 多结果为`true`时只返回**第一个**（找到第一个`true`）
 
 ```js
 const value1 = 'value1', value2 = 'value2', value3 = 'value3'
@@ -284,7 +284,7 @@ console.log(result) // print -> null
 
 - 短路求值
 
-> 左侧的条件为假时才执行右侧侧命令，
+> 左侧的条件为假时才执行右侧侧命令（找到第一个`true`）
 
 ```js
 const variable = true
@@ -327,7 +327,7 @@ console.log(result) // print -> 0
 
 ## ??空值合并运算符
 
-一句话概括??和“或”的区别：使用 `||` 时，任何假值（`0`、`""`、`false`、`NaN` 等）都会导致返回第二个操作数，使用 `??` 时，仅当第一个操作数是 `null` 或 `undefined` 时才会返回第二个操作数。
+一句话概括`??`和`||`的区别：使用 `||` 时，任何假值（`0`、`""`、`false`、`NaN` 等）都会导致返回第二个操作数，使用 `??` 时，仅当第一个操作数是 `null` 或 `undefined` 时才会返回第二个操作数。
 
 - 只要变量值不是`null`或`undefined`时就生效
 
@@ -452,12 +452,12 @@ switch (variable) {
 
 - 无`break`的问题
 
-代码会在`case`匹配成功后继续往下执行，直到运行到break或最后
+代码会在`case`匹配成功后继续往下执行，直到运行到`break`或最后
 
 ```js
-let variable = 1
+const num = 1
 
-switch (variable) {
+switch (num) {
   case 0:
     console.log(0)
   case 1:
@@ -473,7 +473,7 @@ switch (variable) {
 
 - case分组
 
-如果想让两个`case`执行同一个方法，可以按照以下写法（实际还是利用**无break的问题**）
+如果想让两个`case`执行同一个方法，可以按照以下写法（实际还是利用**无`break`的问题**）
 
 ```js
 let variable = 1
@@ -1181,9 +1181,11 @@ console.log(user)
 
 ## Symbol类型
 
+一般使用 `symbol` 属性是为了“秘密地”将一些东西隐藏到我们需要的对象中，但其他地方看不到它。
+
 根据规范，对象的属性键只能是字符串类型或者 Symbol 类型。不是 Number，也不是 Boolean，只有字符串或 Symbol 这两种类型。
 
-> Symbol创建的实例化对象是唯一的，即使描述内容相等。
+> Symbol创建的实例化对象是**唯一**的，即使描述内容相等。
 
 ```js
 let id = Symbol('unique') // unique是Symbol的描述内容
@@ -1224,7 +1226,7 @@ console.log(id.description) // 'unique' description输出为字符串，且仅�
 
 ### “隐藏”属性
 
-> 对象字面量中的Symbol
+> 对象字面量中的Symbol（动态赋值变量名的一种方法）
 
 ```js
 let id = Symbol('unique')
@@ -1279,5 +1281,51 @@ console.log(clone) // { name: 'pd', [Symbol(unique)]: 1 }
 
 
 
-### 全局Symbol
+### 全局（注册表）Symbol
+
+使用`Symbol.for(key)`可以读取程序内的所有创建的`Symbol.for(key)`
+
+> 文件A
+
+```js
+const fileA = Symbol.for('a')
+```
+
+> 文件B
+
+```js
+Symbol.for('b')
+```
+
+> 文件C
+
+```js
+const c = Symbol.for('c')
+const c2 = Symbol.for('c')
+
+console.log(Symbol.for('fileA')) // Symbol('fileA') 没有则创建
+console.log(Symbol.for('b')) // 文件b的 Symbol('b')
+console.log(c === c2) // true 这时候他俩用的是同一个Symbol.for('c')
+console.log(Symbol.keyFor(c2)) // c 通过变量名在全局注册表里查询，但是非全局的用不了，一般统一使用description
+```
+
+`Symbol()`只在当前作用域内生效，不会存到全局注册表，且具有唯一性。`Symbol.for()`会在全局注册表中搜索，没有则创建。
+
+
+
+### 例子
+
+```js
+// 一个公共的对象
+let user = {
+  name: 'admin'
+}
+// 在公共对象里添加自己的私有方法，只能自己使用，别人读取不到。
+let mySymbol = Symbol('mySymbol')
+let obj = {
+  age: 18
+}
+user[mySymbol] = obj
+console.log(user[mySymbol].age) // 由于别人没有mySymbol这个变量，所以别人读取不到
+```
 

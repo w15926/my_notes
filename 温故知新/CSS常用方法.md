@@ -100,13 +100,20 @@ border-right: 50px solid blueviolet;
 ```css
     overflow: hidden;
     z-index: 1;
+
+  	&::-webkit-scrollbar-corner {
+    	background: transparent;
+  	}
+
     &::-webkit-scrollbar {
       width: 0px;
     }
+
     &::-webkit-scrollbar-thumb {
       background: rgba($color: #000000, $alpha: 0.3);
       border-radius: 3px;
     }
+
     &:hover {
       overflow-x: hidden;
       overflow-y: overlay;
@@ -123,6 +130,10 @@ border-right: 50px solid blueviolet;
       overflow-x: hidden;
       overflow-y: scroll;
 
+  		&::-webkit-scrollbar-corner {
+    		background: transparent;
+  		}
+
       &::-webkit-scrollbar {
         width: 6px;
         height: 6px;
@@ -133,6 +144,8 @@ border-right: 50px solid blueviolet;
         }
       }
 ```
+
+
 
 # input标签
 
